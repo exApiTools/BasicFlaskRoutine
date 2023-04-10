@@ -170,14 +170,13 @@ namespace TreeRoutine.Routine.BasicFlaskRoutine
 
         private Composite CreateHPPotionComposite()
         {
-            return new Decorator((x => !Settings.BossingMode && PlayerHelper.isHealthBelowPercentage(Settings.HPPotion)
-                                        || (Settings.AllocatedSupremeDecadence && PlayerHelper.isEnergyShieldBelowPercentage(Settings.ESPotion))
-                                ),
-                new Decorator((x => PlayerHelper.playerDoesNotHaveAnyOfBuffs(new List<string>() { "flask_effect_life" })),
-                 new PrioritySelector(
-                    CreateUseFlaskAction(FlaskActions.Life, false),
-                    CreateUseFlaskAction(FlaskActions.Hybrid, false)
-                 )
+            return new Decorator(x => !Settings.BossingMode && PlayerHelper.isHealthBelowPercentage(Settings.HPPotion)
+                                        || (Settings.AllocatedSupremeDecadence && PlayerHelper.isEnergyShieldBelowPercentage(Settings.ESPotion)),
+                new Decorator(x => PlayerHelper.playerDoesNotHaveAnyOfBuffs(new List<string>() { "flask_effect_life", "flask_effect_life_not_removed_when_full" }),
+                    new PrioritySelector(
+                        CreateUseFlaskAction(FlaskActions.Life, false),
+                        CreateUseFlaskAction(FlaskActions.Hybrid, false)
+                    )
                 )
             );
         }
