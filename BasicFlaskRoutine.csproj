@@ -8,11 +8,11 @@
     <RootNamespace>BaseTreeRoutine.Routine.BasicFlaskRoutine</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <OutputPath>..\..\..\..\PoeHelper\Plugins\Compiled\BasicFlaskRoutine\</OutputPath>
+    <OutputPath>..\..\..\..\..\PoeHelper\Plugins\Compiled\BasicFlaskRoutine\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExileCore">
-      <HintPath>..\..\..\..\PoeHelper\ExileCore.dll</HintPath>
+      <HintPath>..\..\..\..\..\PoeHelper\ExileCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
