@@ -24,6 +24,14 @@ namespace TreeRoutine
         public Action<string, float> Log => LogMessage;
         public Action<string, float> LogErr => LogError;
 
+        public Action<string, float> LogConfigErr => (s, f) =>
+        {
+            if (Settings.EnableMissingConfigEntryNotifications)
+            {
+                LogError(s, f);
+            }
+        };
+
         public FlaskHelper<TSettings, TCache> FlaskHelper { get; set; } = new FlaskHelper<TSettings, TCache>();
         public PlayerHelper<TSettings, TCache> PlayerHelper { get; set; } = new PlayerHelper<TSettings, TCache>();
         public TreeHelper<TSettings, TCache> TreeHelper { get; set; } = new TreeHelper<TSettings, TCache>();

@@ -519,6 +519,8 @@ namespace TreeRoutine.Routine.BasicFlaskRoutine
                 Settings.BossingModeToggle.Value = ImGuiExtension.Checkbox("Disable Defensive and Offensive Flasking", Settings.BossingModeToggle);
                 ImGui.Separator();
                 Settings.BossingModeHotkey.Value = ImGuiExtension.HotkeySelector("BossingModeHotkey", Settings.BossingModeHotkey.Value);
+                ImGui.Separator();
+                Settings.EnableMissingConfigEntryNotifications.Value = ImGuiExtension.Checkbox("Notify about missing entries in config files", Settings.EnableMissingConfigEntryNotifications.Value);
                 ImGui.TreePop();
             }
 

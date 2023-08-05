@@ -22,6 +22,7 @@ namespace TreeRoutine.Routine.BuildYourOwnRoutine.UI.MenuItem
         {
             Plugin.Settings.TicksPerSecond.Value = ImGuiExtension.IntSlider("Ticks Per Second", Plugin.Settings.TicksPerSecond);
             Plugin.Settings.Debug.Value = ImGuiExtension.Checkbox("Debug", Plugin.Settings.Debug.Value);
+            Plugin.Settings.EnableMissingConfigEntryNotifications.Value = ImGuiExtension.Checkbox("Notify about missing entries in config files", Plugin.Settings.EnableMissingConfigEntryNotifications.Value);
 
             if (ImGui.TreeNodeEx("Individual Flask Settings", ImGuiTreeNodeFlags.DefaultOpen))
             {

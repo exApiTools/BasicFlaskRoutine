@@ -36,7 +36,7 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
 
             if (Core.Cache.MiscBuffInfo == null)
             {
-                Core.LogErr(Core.Name + ": Error: Misc Buff Info cache was never initialized. This method will not function properly.", Core.ErrmsgTime);
+                Core.LogErr($"{Core.Name}: Error: Misc Buff Info cache was never initialized. This method will not function properly.", Core.ErrmsgTime);
                 return null;
             }
 
@@ -51,14 +51,14 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
 
             if (string.IsNullOrEmpty(currentFlask.Path))
             {
-                Core.LogErr(Core.Name + ": Ignoring Flask " + index + " for an empty or null path.", 5);
+                Core.LogErr($"{Core.Name}: Ignoring Flask {index} for an empty or null path.", 5);
                 return null;
             }
 
             var baseItem = Core.GameController.Files.BaseItemTypes.Translate(currentFlask.Path);
             if (baseItem == null)
             {
-                Core.LogErr(Core.Name + ": Ignoring Flask " + index + ". No base item was found! Path: " + currentFlask.Path, 5);
+                Core.LogErr($"{Core.Name}: Ignoring Flask {index}. No base item was found! Path: {currentFlask.Path}", 5);
                 return null;
             }
             
@@ -75,21 +75,21 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
             //TreeRoutine.LogError("Flask: " + simplePlayerFlask.Name + "Num Charges: " + flaskChargesStruct.NumCharges + " Use Charges: " + useCharge + " Charges Per use: " + flaskChargesStruct.ChargesPerUse + " Total Uses: " + simplePlayerFlask.TotalUses, 5);
 
 
-            var flaskBaseName = currentFlask.GetComponent<Base>().Name;
+            var flaskBaseName = currentFlask.GetComponent<Base>().Name ?? "NULL";
             if (!Core.Cache.MiscBuffInfo.flaskNameToBuffConversion.TryGetValue(
                 flaskBaseName, out string flaskBuffOut))
             {
                 if (Core.Settings.Debug)
-                    Core.LogErr(Core.Name + ": Cannot find Flask Buff for flask on slot " + (index + 1) + " with base name: " + (flaskBaseName ?? "NULL"), 5);
+                    Core.LogErr($"{Core.Name}: Cannot find Flask Buff for flask on slot {index + 1} with base name: {flaskBaseName}", 5);
                 return null;
             }
 
             simplePlayerFlask.BuffString1 = flaskBuffOut;
 
             // For Hybrid Flask as it have two buffs.
-            if (!Core.Cache.MiscBuffInfo.flaskNameToBuffConversion2.TryGetValue(flaskBaseName, out flaskBuffOut))
-                simplePlayerFlask.BuffString2 = "";
-            else simplePlayerFlask.BuffString2 = flaskBuffOut;
+            simplePlayerFlask.BuffString2 = Core.Cache.MiscBuffInfo.flaskNameToBuffConversion2.TryGetValue(flaskBaseName, out flaskBuffOut) 
+                ? flaskBuffOut 
+                : "";
 
             simplePlayerFlask.Mods = currentFlask.GetComponent<Mods>();
 
@@ -109,7 +109,7 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
                 BaseUseCharges = ((100 + totalChargeReduction) / 100) * BaseUseCharges;
             foreach (var mod in flaskMods)
             {
-                if (mod.Name.ToLower().Contains(ChargeReductionModName))
+                if (mod.Name.Contains(ChargeReductionModName, StringComparison.OrdinalIgnoreCase))
                     BaseUseCharges = ((100 + (float)mod.Value1) / 100) * BaseUseCharges;
             }
             return (int)Math.Floor(BaseUseCharges);
@@ -119,13 +119,13 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
         {
             if (Core.Cache.FlaskInfo == null)
             {
-                Core.LogErr(Core.Name + ": Error: Flask Info cache was never initialized. This method will not function properly.", Core.ErrmsgTime);
+                Core.LogErr($"{Core.Name}: Error: Flask Info cache was never initialized. This method will not function properly.", Core.ErrmsgTime);
                 return;
             }
 
             //Checking flask action based on flask name type.
             if (!Core.Cache.FlaskInfo.FlaskTypes.TryGetValue(flask.Name, out FlaskActions flaskActionOut))
-                Core.LogErr(Core.Name + ": Error: " + flask.Name + " name not found. Add to config/flaskinfo.json and report this error message.", Core.ErrmsgTime);
+                Core.LogConfigErr($"{Core.Name}: Error: Flask type {flask.Name} not found. You can add it to config/flaskinfo.json.", Core.ErrmsgTime);
             else flask.Action1 = flaskActionOut;
 
             //Checking for unique flasks.
@@ -135,19 +135,20 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
 
                 //Enabling Unique flask action 2.
                 if (!Core.Cache.FlaskInfo.UniqueFlaskNames.TryGetValue(flask.Name, out flaskActionOut))
-                    Core.LogErr(Core.Name + ": Error: " + flask.Name + " unique name not found. Add to config/flaskinfo.json and report this error message.", Core.ErrmsgTime);
+                    Core.LogConfigErr($"{Core.Name}: Error: Unique flask name {flask.Name} not found. You can add it to config/flaskinfo.json.", Core.ErrmsgTime);
                 else flask.Action2 = flaskActionOut;
             }
 
             foreach (var mod in flask.Mods.ItemMods)
             {
-                if (mod.Name.ToLower().Contains("instant"))
+                var modName = mod.Name;
+                if (modName.Contains("instant", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (mod.Name.Contains("FlaskPartialInstantRecovery"))
+                    if (modName.Contains("FlaskPartialInstantRecovery"))
                         flask.InstantType = FlaskInstantType.Partial;
-                    else if (mod.Name.Contains("FlaskInstantRecoveryOnLowLife"))
+                    else if (modName.Contains("FlaskInstantRecoveryOnLowLife"))
                         flask.InstantType = FlaskInstantType.LowLife;
-                    else if (mod.Name.Contains("FlaskFullInstantRecovery"))
+                    else if (modName.Contains("FlaskFullInstantRecovery"))
                         flask.InstantType = FlaskInstantType.Full;
                 }
 
@@ -155,15 +156,15 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
                 if (flask.Mods.ItemRarity == ItemRarity.Unique)
                     continue;
 
-                if (mod.Name == "FlaskEffectNotRemovedOnFullMana")
+                if (modName == "FlaskEffectNotRemovedOnFullMana")
                 {
                     flask.RemovedWhenFull = false;
                     flask.BuffString2 = "flask_effect_mana_not_removed_when_full";
                 }
 
                 //Checking flask mods.
-                if (!Core.Cache.FlaskInfo.FlaskMods.TryGetValue(mod.Name, out FlaskActions action2))
-                    Core.LogErr(Core.Name + ": Error: " + mod.Name + " mod not found. Is it unique flask? If not, report this error message.", Core.ErrmsgTime);
+                if (!Core.Cache.FlaskInfo.FlaskMods.TryGetValue(modName, out FlaskActions action2))
+                    Core.LogConfigErr($"{Core.Name}: Error: Mod {modName} (called '{mod.DisplayName}' ingame) not found. You can add it to config/flaskinfo.json.", Core.ErrmsgTime);
                 else if (action2 != FlaskActions.Ignore)
                     flask.Action2 = action2;
             }
@@ -187,7 +188,7 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
             if (flask == null)
             {
                 if (Core.Settings.Debug)
-                    Core.Log(Core.Name + ": Cannot use a null flask.", 1);
+                    Core.Log($"{Core.Name}: Cannot use a null flask.", 1);
                 return false;
             }
                 
@@ -195,7 +196,7 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
             if (flask.TotalUses - reservedUses <= 0)
             {
                 if (Core.Settings.Debug)
-                    Core.Log(Core.Name + ": Don't have enough uses on flask " + flask.Name + " to use.", 1);
+                    Core.Log($"{Core.Name}: Don't have enough uses on flask {flask.Name} to use.", 1);
                 return false;
             }
 
@@ -205,21 +206,21 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
             if (flask.Action1 == FlaskActions.Life && !(Core.PlayerHelper.isHealthBelowPercentage(99) || Core.PlayerHelper.isEnergyShieldBelowPercentage(99)))
             {
                 if (Core.Settings.Debug)
-                    Core.Log(Core.Name + ": Can't use life flask " + flask.Name + " at full health and energy shiled.", 1);
+                    Core.Log($"{Core.Name}: Can't use life flask {flask.Name} at full health and energy shiled.", 1);
                 return false;
             }
 
             if (flask.Action1 == FlaskActions.Mana && !Core.PlayerHelper.isManaBelowPercentage(99))
             {
                 if (Core.Settings.Debug)
-                    Core.Log(Core.Name + ": Can't use mana flask " + flask.Name + " at full mana.", 1);
+                    Core.Log($"{Core.Name}: Can't use mana flask {flask.Name} at full mana.", 1);
                 return false;
             }
 
             if (flask.Action1 == FlaskActions.Hybrid && !(Core.PlayerHelper.isHealthBelowPercentage(99) || Core.PlayerHelper.isManaBelowPercentage(99)))
             {
                 if (Core.Settings.Debug)
-                    Core.Log(Core.Name + ": Can't use hybrid " + flask.Name + " at full health and mana.", 1);
+                    Core.Log($"{Core.Name}: Can't use hybrid {flask.Name} at full health and mana.", 1);
                 return false;
             }
 
