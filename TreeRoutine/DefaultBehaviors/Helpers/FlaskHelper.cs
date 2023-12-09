@@ -33,7 +33,6 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
 
         public PlayerFlask GetFlaskInfo(int index, Entity foundFlask=null)
         {
-
             if (Core.Cache.MiscBuffInfo == null)
             {
                 Core.LogErr($"{Core.Name}: Error: Misc Buff Info cache was never initialized. This method will not function properly.", Core.ErrmsgTime);
@@ -42,6 +41,17 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
 
             Entity currentFlask = foundFlask ?? Core.GameController.Game.IngameState.ServerData.PlayerInventories.FirstOrDefault(x => x.Inventory.InventType == InventoryTypeE.Flask)?.Inventory?.InventorySlotItems?.FirstOrDefault(x => x.InventoryPosition.X == index)?.Item;
             if (currentFlask == null || currentFlask.Address == 0x00)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrEmpty(currentFlask.Path))
+            {
+                Core.LogErr($"{Core.Name}: Ignoring Flask {index} for an empty or null path.", 5);
+                return null;
+            }
+
+            if (currentFlask.Path.Contains("Tinctures/Tincture"))
             {
                 return null;
             }
