@@ -1,21 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
-    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <TargetFramework>net8.0-windows</TargetFramework>
     <OutputType>Library</OutputType>
-    <RootNamespace>BaseTreeRoutine.Routine.BasicFlaskRoutine</RootNamespace>
     <UseWindowsForms>true</UseWindowsForms>
-    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-    <OutputPath>..\..\..\..\..\PoeHelper\Plugins\Compiled\BasicFlaskRoutine\</OutputPath>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>latest</LangVersion>
+    <DebugType>embedded</DebugType>
+    <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
+    <EmbedAllSources>true</EmbedAllSources>
   </PropertyGroup>
+
   <ItemGroup>
     <Reference Include="ExileCore">
-      <HintPath>..\..\..\..\..\PoeHelper\ExileCore.dll</HintPath>
+      <HintPath>$(exapiPackage)\ExileCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
+  
   <ItemGroup>
     <None Update="Profile\BasicFlaskRoutine.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -50,8 +51,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="ImGui.NET" Version="1.87.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="ImGui.NET" Version="1.90.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.Mathematics" Version="4.2.0" />
   </ItemGroup>
