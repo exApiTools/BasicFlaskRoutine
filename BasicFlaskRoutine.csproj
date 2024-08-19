@@ -9,14 +9,12 @@
     <PathMap>$(MSBuildProjectDirectory)=$(MSBuildProjectName)</PathMap>
     <EmbedAllSources>true</EmbedAllSources>
   </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="ExileCore">
       <HintPath>$(exapiPackage)\ExileCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
-  
   <ItemGroup>
     <None Update="Profile\BasicFlaskRoutine.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
