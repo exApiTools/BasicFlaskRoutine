@@ -21,7 +21,12 @@ namespace TreeRoutine.DefaultBehaviors.Helpers
             var flaskItems = Core.GameController.Game.IngameState.ServerData.PlayerInventories
                 .FirstOrDefault(x => x.Inventory.InventType == InventoryTypeE.Flask)?.Inventory?.InventorySlotItems;
 
-            List<PlayerFlask> flaskList = new List<PlayerFlask>();
+            if (flaskItems == null)
+            {
+                return null;
+            }
+
+            var flaskList = new List<PlayerFlask>();
             foreach (var flaskItem in flaskItems)
             {
                 var flask = GetFlaskInfo((int)flaskItem.PosX, flaskItem.Item);
