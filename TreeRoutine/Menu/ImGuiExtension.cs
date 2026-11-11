@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using ExileCore;
 using ExileCore.Shared.Nodes;
-using ImGuiNET;
+using Hexa.NET.ImGui;
 using SharpDX;
 using ImGuiVector2 = System.Numerics.Vector2;
 using ImGuiVector4 = System.Numerics.Vector4;
@@ -183,7 +183,7 @@ namespace TreeRoutine.Menu
                 byte[] currentValueBytes = Encoding.UTF8.GetBytes(currentValue);
                 Array.Copy(currentValueBytes, buff, currentValueBytes.Length);
             }
-            ImGui.InputText(label, buff, maxLength, flags);
+            ImGui.InputText(label, ref buff[0], maxLength, flags);
             return Encoding.Default.GetString(buff).TrimEnd('\0');
         }
 

@@ -10,6 +10,7 @@ using System.IO;
 using TreeRoutine.Menu;
 using TreeRoutine.Routine.BuildYourOwnRoutine.Trigger;
 using System.Numerics;
+using Hexa.NET.ImGui;
 
 namespace TreeRoutine.Routine.BuildYourOwnRoutine.UI.MenuItem
 {
@@ -164,7 +165,7 @@ namespace TreeRoutine.Routine.BuildYourOwnRoutine.UI.MenuItem
                 if (composite.Type == TriggerType.Action)
                 {
                     // Push an ID so everything below remains unique
-                    ImGuiNative.igIndent(1.0f);
+                    ImGui.Indent(1.0f);
 
                     var profileAction = CreateTriggerTextWithPopupMenu(label, chosenColor, parent, composite);
                     if (profileAction == ProfileMenuAction.Edit)
@@ -184,7 +185,7 @@ namespace TreeRoutine.Routine.BuildYourOwnRoutine.UI.MenuItem
                     }
 
                     RenderTriggerMenu();
-                    ImGuiNative.igUnindent(1.0f);
+                    ImGui.Unindent(1.0f);
                 }
                 else if (ImGui.TreeNodeEx("", ImGuiTreeNodeFlags.OpenOnArrow | ImGuiTreeNodeFlags.DefaultOpen))
                 {
