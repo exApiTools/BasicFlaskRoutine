@@ -39,7 +39,7 @@ namespace TreeRoutine.Routine.BuildYourOwnRoutine.UI.MenuItem
             }
             else ImGui.TextDisabled("Settings");
 
-            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AnyWindow) && ImGui.IsMouseClicked(0))
+            if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(0))
             {
                 RenderSettingsWindow = true;
             }
@@ -54,7 +54,7 @@ namespace TreeRoutine.Routine.BuildYourOwnRoutine.UI.MenuItem
             }
             else ImGui.TextDisabled("Profile");
 
-            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AnyWindow) && ImGui.IsMouseClicked(0))
+            if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(0))
             {
                 RenderSettingsWindow = false;
             }

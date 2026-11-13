@@ -123,7 +123,7 @@ namespace TreeRoutine.Menu
         {
             ImGui.SameLine();
             ImGui.TextDisabled(text);
-            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AnyWindow))
+            if (ImGui.IsItemHovered())
             {
                 ImGui.SetTooltip(desc);
             }
@@ -201,7 +201,6 @@ namespace TreeRoutine.Menu
                 if (Input.GetKeyState(Keys.Escape))
                 {
                     ImGui.CloseCurrentPopup();
-                    ImGui.EndPopup();
                 }
                 else
                 {

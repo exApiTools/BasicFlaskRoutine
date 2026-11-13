@@ -301,7 +301,7 @@ namespace TreeRoutine.Routine.BuildYourOwnRoutine.UI.MenuItem
         {
             ImGui.Text(label);
 
-            if (ImGui.IsItemHovered(ImGuiHoveredFlags.AnyWindow) && ImGui.IsMouseClicked(ImGuiMouseButton.Right))
+            if (ImGui.IsItemHovered() && ImGui.IsMouseClicked(ImGuiMouseButton.Right))
             {
                 ImGui.OpenPopup("Trigger Menu Context");
             }

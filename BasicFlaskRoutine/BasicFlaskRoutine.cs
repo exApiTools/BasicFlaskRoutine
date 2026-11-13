@@ -520,7 +520,6 @@ namespace TreeRoutine.Routine.BasicFlaskRoutine
                 Settings.BossingModeHotkey.Value = ImGuiExtension.HotkeySelector("BossingModeHotkey", Settings.BossingModeHotkey.Value);
                 ImGui.Separator();
                 Settings.EnableMissingConfigEntryNotifications.Value = ImGuiExtension.Checkbox("Notify about missing entries in config files", Settings.EnableMissingConfigEntryNotifications.Value);
-                ImGui.TreePop();
             }
 
 
@@ -703,8 +702,6 @@ namespace TreeRoutine.Routine.BasicFlaskRoutine
                         ImGuiExtension.Checkbox("Ignore Full Health Unique Monsters", Settings.OffensiveIgnoreFullHealthUniqueMonsters);
                     ImGui.TreePop();
                 }
-
-                ImGui.TreePop();
             }
         }
 
